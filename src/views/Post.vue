@@ -1,6 +1,10 @@
 <template>
   <div>
-      <h1>{{slugURL}}</h1>
+    <div class="post-main">
+      <header class="post">
+        <h1>{{slugURL}}</h1>
+      </header>
+    </div>
   </div>
 </template>
 
@@ -23,5 +27,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .post-main {
+    margin-left: 1em;
+  }
 
+  header.post {
+    background: #D7CCC8;
+    padding-left: 2em;
+    height: 80vh;
+    display: flex;
+    align-items: flex-end;
+  }
 </style>

@@ -8,17 +8,20 @@ import Cell from "./components/layout/grid/cell.vue";
 <template>
   <Container class="full">
     <GridX>
+      <Cell class="large-3" id="sidebar-cell"></Cell>
       <Cell class="large-auto">
         <transition name="slide" mode="out-in">
           <RouterView id="router-view"/>
         </transition>
       </Cell>
-      <Cell class="large-3" id="sidebar-cell">
+      <Cell class="large-3" id="sidebar-cell" style="position:fixed">
         <header id="global-sidebar">
           <div id="top-bar">
-            <div id="logo-wrap">
-              <img src="/logo/main.svg" alt="SetUpon">
-            </div>
+            <RouterLink to="/">
+              <div id="logo-wrap">
+                <img src="/logo/main.svg" alt="SetUpon">
+              </div>
+            </RouterLink>
             <div class="tb-buttons">
               <nav>
                 <!-- <RouterLink></RouterLink> -->

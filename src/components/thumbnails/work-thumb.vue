@@ -105,6 +105,14 @@ export default {
         margin-bottom: 2em;
         position: relative;
         height: 60vh;
+
+        &:hover{ 
+            //transform: scale(1.2);
+            
+            img {
+                transform: scale(1.2);
+            }
+        }
     }
     .details {
         padding: 2em;
