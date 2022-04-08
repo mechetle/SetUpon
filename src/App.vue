@@ -3,6 +3,13 @@ import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "@/components/HelloWorld.vue";
 import GridX from "./components/layout/grid/grid-x.vue";
 import Cell from "./components/layout/grid/cell.vue";
+
+//icons (google material icons because i can't be bothered designing them):
+import SettingsIcon from "vue-material-design-icons/cogOutline.vue"
+import HomeIcon from "vue-material-design-icons/homeOutline.vue"
+import HomeOutline from "../node_modules/vue-material-design-icons/homeOutline.vue"
+import LightningBoltOutline from "vue-material-design-icons/LightningBoltOutline.vue"
+import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVariantOutline.vue"
 </script>
 
 <template>
@@ -25,16 +32,31 @@ import Cell from "./components/layout/grid/cell.vue";
             <div class="tb-buttons">
               <nav>
                 <!-- <RouterLink></RouterLink> -->
-                <RouterLink to="/settings"><span class="large-state">Settings</span></RouterLink>
+                <RouterLink to="/settings"><span class="large-state"><SettingsIcon></SettingsIcon></span></RouterLink>
                 <RouterLink to="/user/0"><span class="large-state">Profile</span></RouterLink>
               </nav>
             </div>
           </div>
 
           <ul id="main-nav" class="hover-fx dark">
-            <li><RouterLink to="/"><span class="large-state">Home</span></RouterLink></li>
-            <li><RouterLink to="/trending"><span class="large-state">Trending</span></RouterLink></li>  
-            <li><RouterLink to="/items"><span class="large-state">Browse Items</span></RouterLink></li>  
+            <li>
+              <RouterLink to="/">
+                <HomeOutline :size="29"></HomeOutline>
+                <span class="large-state">Home</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/trending">
+                <LightningBoltOutline :size="29"></LightningBoltOutline>
+                <span class="large-state">Trending</span>
+              </RouterLink>
+              </li>  
+            <li>
+              <RouterLink to="/items">
+                <BookOpenPageVariantOutline :size="29"></BookOpenPageVariantOutline>
+                <span class="large-state">Browse Items</span>
+              </RouterLink>
+            </li>  
           </ul>
 
         </header>
@@ -85,11 +107,24 @@ import Cell from "./components/layout/grid/cell.vue";
     width: 100px;
 
     .tb-buttons {
-      display:none;
+      //display: none;
+      
+      nav {
+        transition-delay: 0.5s;
+        transform: scale(0);
+        opacity: 0 !important;
+      }
+    }
+
+    #main-nav {
+      a {
+        gap: 0;
+      }
     }
 
     span.large-state {
-      display: none;
+      //display: none;
+      font-size:0;
     }
   }
   #logo-wrap {
@@ -122,6 +157,17 @@ header#global-sidebar {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+
+    .tb-buttons {
+      nav { 
+        opacity: 1;
+        transition-delay: 0s;
+      }
+    }
+
+    a {
+      text-decoration: none;
+    }
   }
 
   #main-nav { 
@@ -143,6 +189,15 @@ header#global-sidebar {
       padding: 0.75em 1em;
       font-size: 1.35em;
       border-radius: 0.85em;
+
+      align-items: center;
+      display: flex;
+
+      gap: 0.5em;
+
+      .material-design-icon {
+        display: inline-flex;
+      }
     }
 
     a:hover, .router-link-exact-active {
