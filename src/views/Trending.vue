@@ -4,6 +4,19 @@
   </div>
 </template>
 
+<script>
+export default {
+  data () {
+    return {
+    }
+  },
+
+  beforeCreate: function() {
+    document.body.className = '';
+  }
+}
+</script>
+
 <style>
 @media (min-width: 1024px) {
   .about {

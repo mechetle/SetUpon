@@ -7,3 +7,16 @@ import TheWelcome from "@/components/TheWelcome.vue";
     <TheWelcome />
   </main>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+    }
+  },
+
+  beforeCreate: function() {
+    document.body.className = '';
+  }
+}
+</script>
