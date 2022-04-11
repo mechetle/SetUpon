@@ -42,3 +42,38 @@ ul {
     margin-left: 1.7em;
     text-indent: 0.7em;
 }
+
+a {
+  color: #388E3C; // lol i should've used variables oopsies
+}
+
+p {
+  > a {
+    text-decoration: none;
+    position: relative;
+
+    transition: all 0.3s;
+
+    &:after {
+      content: " ";
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background: #388e3c;
+      z-index: -1;
+      transform-origin: bottom;
+      transform: scaleY(0.2) translateY(1.5em);
+      transition: all 0.3s;
+      transition-timing-function: cubic-bezier(0.46, 0.01, 0, 0.91);
+    }
+
+    &:hover {
+      color: #fff;
+      &:after {
+        transform: scaleY(1) scaleX(1.1) translateY(0);
+      }
+    }
+  }
+}

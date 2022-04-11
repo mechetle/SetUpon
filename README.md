@@ -1,6 +1,5 @@
 # SetUpon
-
-This template should help get you started developing with Vue 3 in Vite.
+An interactive annotating image sharing / social media platform based around sharing home office and gaming setups.
 
 ## Recommended IDE Setup
 
@@ -19,17 +18,14 @@ npm install
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+yarn dev
 ```
 
 ### Compile and Minify for Production
 
 ```sh
-npm run build
+yarn build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+## AWS setup
+It is done when deployed

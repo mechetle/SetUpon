@@ -93,6 +93,10 @@ import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVa
       transform: translateY(-100%)
     }
   }
+
+  .add-button {
+    transform: translateX(150px);
+  }
 }
 
 .grid-x * {
@@ -142,7 +146,7 @@ import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVa
 header#global-sidebar {
   line-height: 1.5;
   height: 100vh;
-  position: sticky;
+  //position: sticky;
   top: 0;
   right: 0;
   padding: 0 3em;
@@ -167,6 +171,7 @@ header#global-sidebar {
 
     a {
       text-decoration: none;
+      color: #000;
     }
   }
 

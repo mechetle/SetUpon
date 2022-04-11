@@ -116,6 +116,8 @@ export default {
     }
     .details {
         padding: 2em;
+        -webkit-mask-box-image: linear-gradient(transparent,black, black);
+    backdrop-filter: blur(10px) contrast(0.5);
     }
     .thumb-bg {
         overflow-y: hidden;
@@ -131,6 +133,8 @@ export default {
             left: 0;
             width: 100%;
             height: auto;
+            //transition-timing-function: cubic-bezier(0.95, 0.16, 0.15, 0.95);
+            
         }
     }
 </style>
