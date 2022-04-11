@@ -27,22 +27,43 @@ exports.handler = async (event, context) => {
       // Get user's posts
       case "GET /posts/{user}":
         body = await dynamo
-          .get({
+          .query({
             TableName: "su-user-setups",
-            Key: {
-              user: event.pathParameters.user
+            KeyConditionExpression: "#yr = :yyyy",
+            
+            ExpressionAttributeNames:{
+              "#yr": "user"
+            },
+            ExpressionAttributeValues: {
+              ":yyyy": event.pathParameters.user
             }
+            //Key('user').eq(event.pathParameters.user)
           })
           .promise();
         break;
       // Get indevidual post
       case "GET /posts/{user}/{date}":
         body = await dynamo
+          /*
+          .query({
+            TableName: "su-user-setups",
+            KeyConditionExpression: "#yr = :yyyy and #posted_date = :urlDate",
+            
+            ExpressionAttributeNames:{
+              "#yr": "user",
+              "#posted_date": "date"
+            },
+            ExpressionAttributeValues: {
+              ":yyyy": event.pathParameters.user,
+              ":urlDate": parseInt(event.pathParameters.date)
+            }
+            //Key('user').eq(event.pathParameters.user)
+          })*/
           .get({
             TableName: "su-user-setups",
             Key: {
               user: event.pathParameters.user,
-              date: event.pathParameters.date
+              date: parseInt(event.pathParameters.date)
             }
           })
           .promise();
@@ -71,37 +92,26 @@ exports.handler = async (event, context) => {
         break;
 
 
-      // * Items:
-      case "DELETE /items/{user}":
+      /* * Items: 
+      */
+      case "DELETE /items/{item}":
         await dynamo
           .delete({
             TableName: "su-items",
             Key: {
-              user: event.pathParameters.user
+              item: event.pathParameters.item
             }
           })
           .promise();
-        body = `Deleted item ${event.pathParameters.user}`;
+        body = `Deleted item ${event.pathParameters.item}`;
         break;
-      // Get user's items
-      case "GET /items/{user}":
+      // Get item's items
+      case "GET /items/{item}":
         body = await dynamo
           .get({
             TableName: "su-items",
             Key: {
-              user: event.pathParameters.user
-            }
-          })
-          .promise();
-        break;
-      // Get indevidual item
-      case "GET /items/{user}/{date}":
-        body = await dynamo
-          .get({
-            TableName: "su-items",
-            Key: {
-              user: event.pathParameters.user,
-              date: event.pathParameters.date
+              item: event.pathParameters.item
             }
           })
           .promise();
@@ -116,7 +126,7 @@ exports.handler = async (event, context) => {
             // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
             TableName: "su-items",
             Item: {
-              user: requestJSON.user,   // Partition
+              item: requestJSON.item,   // Partition
               date: requestJSON.date,   // Sort
               title: requestJSON.title,
               description: requestJSON.description, 
@@ -126,7 +136,7 @@ exports.handler = async (event, context) => {
             }
           })
           .promise();
-        body = `Put item ${requestJSON.user}`;
+        body = `Put item ${requestJSON.item}`;
         break;
       
       // Users:

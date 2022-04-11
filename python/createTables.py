@@ -22,7 +22,7 @@ def create_setups_table(dynamodb=None):
         AttributeDefinitions=[
         {
         'AttributeName': 'user',
-        'AttributeType': 'N'
+        'AttributeType': 'S'
         },
         {
         'AttributeName': 'date',
@@ -83,23 +83,15 @@ def create_users_table(dynamodb=None):
 
         KeySchema=[
         {
-        'AttributeName': 'user',
-        'KeyType': 'HASH' # Partition key
-        },
-        {
         'AttributeName': 'username',
-        'KeyType': 'RANGE' # Sort key
+        'KeyType': 'HASH' # Partition key
         }
         ],
         AttributeDefinitions=[
         {
-        'AttributeName': 'user',
-        'AttributeType': 'N'
-        },
-        {
         'AttributeName': 'username',
         'AttributeType': 'S'
-        },
+        }
         ],
         ProvisionedThroughput={
         'ReadCapacityUnits': 10,
@@ -112,7 +104,7 @@ if __name__ == '__main__':
     setups_table = create_setups_table()
     print("Table status (setups_table):", setups_table.table_status)
 
-    items_table = create_setups_table()
+    items_table = create_items_table()
     print("Table status (items_table):", items_table.table_status)
 
     users_table = create_users_table()
