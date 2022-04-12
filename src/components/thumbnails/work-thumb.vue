@@ -5,19 +5,27 @@ Seen on the home and part of the trending page.
 -->
 <template>
     <div :class="['cell', 'medium-6', columns, 'work-thumb']">
-        <RouterLink :to="`/post/${slug}`">
+        <RouterLink :to="`/${slug}`">
             <div class="work-thumb-wrapper">
                 <div class="work-thumb-wrapper-cont">
                     <div class="details">
-                        <h2>{{ title }}</h2>
-                        <p>{{ desc }}</p>
-                        <div class="cat-wrapper">
-                            <div class="categories">
-                                <span v-for="categories in cat" :key="categories">
-                                    {{ categories }}
-                                </span>
-                        
-                                <!-- <span>{{ cat }}</span> -->
+                        <div class="primary-details">
+                            <h2>{{ title }}</h2>
+                            <p>{{ desc }}</p>
+                            <div class="cat-wrapper">
+                                <div class="categories">
+                                    <span v-for="categories in cat" :key="categories">
+                                        {{ categories }}
+                                    </span>
+                            
+                                    <!-- <span>{{ cat }}</span> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="secondary-details">
+                            <div class="user">
+                                <!-- <img src="" alt=""> -->
+                                <span>{{ user }}</span>
                             </div>
                         </div>
                     </div>
@@ -38,7 +46,7 @@ export default {
         key: String,
         title: {
             type: String,
-            default: 'Untitled Project'
+            default: 'Untitled Post'
         },
         imgSrc: {
             type: String,
@@ -62,6 +70,10 @@ export default {
             type: Number,
             default: 6
         },
+        user: {
+            type: String,
+            default: 'Anonymous'
+        }
     },
     computed: {
         columns() {
@@ -117,10 +129,14 @@ export default {
     .details {
         padding: 2em;
         -webkit-mask-box-image: linear-gradient(transparent,black, black);
-    backdrop-filter: blur(10px) contrast(0.5);
+        backdrop-filter: blur(10px) contrast(0.5);
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
     }
     .thumb-bg {
-        overflow-y: hidden;
+        overflow: hidden;
         height: 60vh;
         position: absolute;
         width: 100%;

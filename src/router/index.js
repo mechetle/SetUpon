@@ -28,8 +28,8 @@ const router = createRouter({
       component: () => import("../views/Items.vue"),
     },
     {
-      path: '/post/:slugURL',
-      name: 'Individual posts',
+      path: '/:user/:date',
+      name: 'posts',
       component: () => import('../views/Post.vue'),
       props: true,
     },
