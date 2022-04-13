@@ -85,13 +85,17 @@ import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVa
   transform: translateY(30%) scale(1.075) translateZ(0);
   filter: blur(1.5rem);
 
-  &.add-caseless {
+/*   &.add-caseless {
     .sidebar {
       transform: translateZ(100px)
     }
     header {
-      transform: translateY(-100%)
-    }
+      //transform: translateY(-100%)
+    } 
+  }*/
+
+  .blur-overlay {
+    opacity: 0 !important;
   }
 
   .add-button {
