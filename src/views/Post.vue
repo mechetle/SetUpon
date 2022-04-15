@@ -113,6 +113,8 @@ export default {
         date: null,
       },
 
+      state: 'view',
+
       sidebar: {
         opened: false,
         title: "null",
@@ -127,7 +129,7 @@ export default {
       rendered_img_dims: [],
       natural_img_dims: [],
 
-      // this is temporary information
+      // this is temporary information -- remove later
       post_temp: {
         user: "Anonymous",   // Partition
         //date: 1234567890,   // Sort
@@ -156,6 +158,25 @@ export default {
             ]
           },
           {
+            url: "https://i.redd.it/if4evdmyfee61.png",
+            caption: "This is another test for the index",
+            annotations: [
+              {
+                x: 450,
+                y: 250,
+                item: "Ikea HEKTOGRAM",
+                personal_comments: "these are my favourite leaves from ikea and they look so real too!"
+              },
+              {
+                x: 1100,
+                y: 350,
+                item: "My pet llama",
+                personal_comments: "i forgor where i got them"
+              }
+              
+            ]
+          },
+          {
             url: "https://i.redd.it/piqmdrogs4t81.png",
             caption: "Oh heres my set up again, i'm just testing for scalability",
             annotations: [
@@ -174,27 +195,17 @@ export default {
               
             ]
           },
-          {
-            url: "https://i.redd.it/piqmdrogs4t81.png",
-            caption: "This is another test for the index",
-            annotations: [
-              {
-                x: 400,
-                y: 150,
-                item: "Ikea Leaves",
-                personal_comments: "these are my favourite leaves from ikea and they look so real too!"
-              },
-              {
-                x: 570,
-                y: 450,
-                item: "Sceptre 24-Inch Curved 165Hz Gaming Monitor",
-                personal_comments: "This is the best gaming monitor I have used so far"
-              }
-              
-            ]
-          },
         ]
       },
+
+      posting_post: {
+        user: null,   // Partition
+        date: null,   // Sort
+        title: null,
+        description: null, 
+        likes: 0,
+        images: [],
+      }
 
     }
   },
@@ -246,6 +257,13 @@ export default {
   created() {
     this.route.user = this.$route.params.user;
     this.route.date = this.$route.params.date;
+
+    if (this.$route.name == "create_post") {
+      document.body.className = 'post create'
+      this.state = 'create'
+    } else {
+      this.state = 'view'
+    }
 
     this.$http
       .get(
@@ -341,7 +359,7 @@ export default {
   },
 
   beforeCreate: function() {
-    document.body.className = 'post';
+    document.body.className = 'post'
   },
 
   methods: {
@@ -379,8 +397,8 @@ export default {
   }
 
   .caption {
-    border-left: 0.6em solid #8C9EFF;
-    padding-left: 0.7em;
+    position: sticky;
+    top: 2em; 
   }
 
   .scale_in-enter-active,

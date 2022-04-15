@@ -9,9 +9,20 @@ import { createVNode } from '@vue/runtime-core';
   <main>
     <!-- <TheWelcome /> -->
     <!-- Add button -->
-    <div class="action-button">
+    <div class="create-menu-expand" v-if="openedCreateMenu">
+      <RouterLink to="/create/setup">
+        <div class="action-button">Setup</div>
+      </RouterLink>
+      <RouterLink to="/">
+        <div class="action-button">Item</div> 
+      </RouterLink>
+    </div>
+
+    <div class="action-button" @click="openCreate" :class="{ opened: openedCreateMenu }">
       <PlusIcon size="45"></PlusIcon>
     </div>
+
+    <!-- <RouterLink to="/create/setup" style="color: inherit;"></RouterLink> -->
     
     <h1>Explore</h1>
     <WorkThumb v-for='index in 5' :key='index' :title="post.title" :slug="post._id + '/' + index" :img-src="post.img + '?' + index" :desc="post.alt" :cat="post.category" :size="post.columns"/>
@@ -37,6 +48,8 @@ export default {
         category: ['cats', 'pets'],
         columns: 8,
       },
+
+      openedCreateMenu: false,
 
       published: null,
     }
@@ -64,6 +77,16 @@ export default {
       });
   },
 
+  methods: {
+    openCreate() {
+      if (this.openedCreateMenu) {
+        this.openedCreateMenu = false;
+      } else {
+        this.openedCreateMenu = true;
+      }
+    }
+  }
+
   
 }
 </script>
@@ -72,5 +95,25 @@ export default {
 section {
   margin: 10vh auto;
   max-width: 600px;
+}
+
+.create-menu-expand {
+  position: fixed;
+  bottom: 0;
+  right: 3.75em;
+  gap: 0.4em;
+  display: inline-flex;
+  align-items: center;
+  z-index: 999;
+
+  > a {
+    color: #000;
+    text-decoration: none;
+
+    > div {
+      position: relative;
+      //margin-top: 0.5em;
+    }
+  }
 }
 </style>

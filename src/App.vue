@@ -18,8 +18,24 @@ import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVa
       <Cell class="large-3" id="sidebar-cell"></Cell>
       <Cell class="large-auto">
         <transition name="slide" mode="out-in">
-          <RouterView id="router-view"/>
+          <RouterView id="router-view"/> 
         </transition>
+        <form @submit.prevent="login">     
+          <h2>Login</h2>     
+          <input       
+            type="email"       
+            placeholder="Email address..."       
+            v-model="email"     
+          />     
+          <input       
+            type="password"       
+            placeholder="password..."       
+            v-model="password"     
+          />     
+          <button type="submit">
+            Login
+          </button>   
+        </form>
       </Cell>
       <Cell class="large-3" id="sidebar-cell" style="position:fixed">
         <header id="global-sidebar">
@@ -34,6 +50,7 @@ import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVa
                 <!-- <RouterLink></RouterLink> -->
                 <RouterLink to="/settings"><span class="large-state"><SettingsIcon></SettingsIcon></span></RouterLink>
                 <RouterLink to="/user/0"><span class="large-state">Profile</span></RouterLink>
+                <button @click="logout">Logout</button>
               </nav>
             </div>
           </div>
@@ -142,6 +159,10 @@ import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVa
 
   > span {
     display: flex;
+  }
+
+  &.opened span {
+    transform: rotate(45deg)
   }
 }
 
