@@ -2,25 +2,26 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import axios from 'axios';
-//import { initializeApp } from "firebase/app";
-/* import firebase from "firebase";
 
-// External API / service: Google Firebase ---- Only using it for authentication.
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+// https://firebase.google.com/docs/web/setup#available-libraries
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
-   apiKey: "AIzaSyCYpZUlS0ubDr30pt33KU_qsiTDJBFj4Ts",
-   authDomain: "setupon-96ebb.firebaseapp.com",
-   projectId: "setupon-96ebb",
-   storageBucket: "setupon-96ebb.appspot.com",
-   messagingSenderId: "580646498621",
-   appId: "1:580646498621:web:892c45979524793d981554"
- };
+  apiKey: "AIzaSyCYpZUlS0ubDr30pt33KU_qsiTDJBFj4Ts",
+  authDomain: "setupon-96ebb.firebaseapp.com",
+  projectId: "setupon-96ebb",
+  storageBucket: "setupon-96ebb.appspot.com",
+  messagingSenderId: "580646498621",
+  appId: "1:580646498621:web:892c45979524793d981554"
+};
+
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig); */
-
-
-
+initializeApp(firebaseConfig);
 const app = createApp(App);
+const authInstance = getAuth();
+
 
 app.use(router);
 
@@ -37,5 +38,6 @@ dyn.listTables(function (err, data)
 */
 
 //axios.defaults.headers.common['secret-sauce'] = process.env.VUE_APP_SECRET_SAUCE
-app.config.globalProperties.$http = axios; // this.$http.get
+app.config.globalProperties.$http = axios;            // this.$http
+
 

@@ -10,6 +10,7 @@
   "dependencies": {
     "aws-sdk": "^2.1111.0",
     "axios": "^0.26.1",
+    "firebase": "^9.6.11",
     "foundation-sites": "^6.7.4",
     "vue": "^3.2.31",
     "vue-material-design-icons": "^5.0.0",

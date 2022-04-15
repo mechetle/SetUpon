@@ -10,6 +10,29 @@ import HomeIcon from "vue-material-design-icons/homeOutline.vue"
 import HomeOutline from "../node_modules/vue-material-design-icons/homeOutline.vue"
 import LightningBoltOutline from "vue-material-design-icons/LightningBoltOutline.vue"
 import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVariantOutline.vue"
+import { reactive, computed } from 'vue'
+
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+
+const currentUser = reactive({
+  uid: null,
+  displayName: null,
+  photoURL: null,
+})
+
+onAuthStateChanged(getAuth(), user => {
+  console.log("User at this state:", user)
+  if (user != null) {
+    console.log("Setting currentUser!")
+    currentUser.uid = user.uid
+    currentUser.displayName = user.displayName
+    currentUser.photoURL = user.photoURL
+  } else {
+    currentUser.uid = null
+    currentUser.displayName = null
+    currentUser.photoURL = null
+  }
+});
 </script>
 
 <template>
@@ -46,11 +69,26 @@ import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVa
               </div>
             </RouterLink>
             <div class="tb-buttons">
-              <nav>
+              <nav class="mini-nav hover-fx dark">
                 <!-- <RouterLink></RouterLink> -->
                 <RouterLink to="/settings"><span class="large-state"><SettingsIcon></SettingsIcon></span></RouterLink>
-                <RouterLink to="/user/0"><span class="large-state">Profile</span></RouterLink>
-                <button @click="logout">Logout</button>
+                <template v-if="currentUser.uid == null">
+                  <RouterLink to="/register"><span class="large-state">Register</span></RouterLink>
+                </template>
+                <template v-else>
+                  <a href="#">
+                    <div class="large-state" id="user-centre">
+                      <img :src="currentUser.photoURL" alt="that's you lol">
+                      <b>{{currentUser.displayName}}</b>
+                    </div>
+                  </a>
+
+                  <div id="user-centre-pop">
+                    <small><i>User id:</i> {{currentUser.uid}}</small>
+                    <RouterLink :to="'/'+ this.currentUser.displayName">View profile</RouterLink>
+                    <a href="#" @click="logout">Logout</a>
+                  </div>
+                </template>
               </nav>
             </div>
           </div>
@@ -85,6 +123,35 @@ import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVa
 
 <style lang="scss">
 @import '@/assets/sass/main.scss';
+
+.material-design-icon {
+  display: flex;
+  align-items: center;
+}
+
+.mini-nav {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+#user-centre-pop {
+  position: absolute;
+  top: 2em;
+  right: 0;
+  display: flex;
+  width: 250px;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  background: #fff;
+  padding: 1.2em 1em;
+  border-radius: 0.5em;
+  box-shadow: 0px 8px 14px hsl(0deg 0% 0% / 13%);
+  justify-content: space-between;
+  
+  small {
+    margin-bottom: 1em;
+  }
+}
 
 #router-view {
   min-height: 100.1vh;  // get rid of transition glitches.
@@ -293,4 +360,73 @@ img {
   }
 }
 
+#user-centre {
+  img {
+    width: 1.15em;
+    border-radius: 100%;
+    margin-right: 0.3em;
+  }
+}
+
 </style>
+
+<script>
+//import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+
+export default {
+/*   data () {
+    return {
+      currentUser: {
+        uid: null,
+        displayName: null,
+        profilePicture: null,
+      }
+    }
+  }, */
+
+  methods: {
+    login() {
+      signInWithEmailAndPassword(getAuth(), this.email, this.password)
+        .then(() => {
+          alert('Successfully logged in');
+          this.$router.push('/');
+        })
+        .catch(error => {
+          alert(error.message);
+        });
+    },
+  
+    logout() {
+      signOut(getAuth())
+        .then(() => {
+          alert('Successfully logged out');
+          this.$router.push('/baiii');
+        })
+        .catch(error => {
+          alert(error.message);
+          this.$router.push('/');
+        });
+    },
+  },
+
+  mounted() {
+   /*  console.log(getAuth().currentUser)
+
+    onAuthStateChanged(getAuth(), (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        this.currentUser = {
+          uid: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        }
+        console.log('🔷 User signed in:', user.uid, user.displayName, user.photoURL)
+      } else {
+        // User is signed out
+        console.log('🔷 User signing out / is signed out')
+      }
+    }) */;
+  },
+}
+</script>

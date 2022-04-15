@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
+import { getAuth } from "firebase/auth";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -31,6 +33,9 @@ const router = createRouter({
       path: "/create/setup",
       name: "create_post",
       component: () => import("../views/Post.vue"),
+      meta: {
+        authRequired: true,
+      },
     },
     {
       path: '/:user/:date',
@@ -38,8 +43,28 @@ const router = createRouter({
       component: () => import('../views/Post.vue'),
       props: true,
     },
+    {
+      path: '/register',
+      name: 'Register',
+      component: () => import('../views/Register.vue'),
+    },
   ],
 
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.authRequired)) {
+    if (getAuth().currentUser) {
+      next();
+    } else {
+      alert('You must be logged in to see this page');
+      next({
+        path: '/',
+      });
+    }
+  } else {
+    next();
+  }
 });
 
 /* router.beforeEach((to, from, next) => {
