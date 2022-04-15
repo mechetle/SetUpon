@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import axios from 'axios';
+import VueClickAway from "vue3-click-away";
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -22,8 +23,8 @@ initializeApp(firebaseConfig);
 const app = createApp(App);
 const authInstance = getAuth();
 
-
 app.use(router);
+app.use(VueClickAway);
 
 app.mount("#app");
 

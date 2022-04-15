@@ -9,7 +9,7 @@ import { createVNode } from '@vue/runtime-core';
   <main>
     <!-- <TheWelcome /> -->
     <!-- Add button -->
-    <div class="create-menu-expand" v-if="openedCreateMenu">
+    <div class="create-menu-expand" v-if="openedCreateMenu" v-click-away="openCreate">
       <RouterLink to="/create/setup">
         <div class="action-button">Setup</div>
       </RouterLink>

@@ -12,7 +12,7 @@ import LightningBoltOutline from "vue-material-design-icons/LightningBoltOutline
 import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVariantOutline.vue"
 import { reactive, computed } from 'vue'
 
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 const currentUser = reactive({
   uid: null,
@@ -43,22 +43,7 @@ onAuthStateChanged(getAuth(), user => {
         <transition name="slide" mode="out-in">
           <RouterView id="router-view"/> 
         </transition>
-        <form @submit.prevent="login">     
-          <h2>Login</h2>     
-          <input       
-            type="email"       
-            placeholder="Email address..."       
-            v-model="email"     
-          />     
-          <input       
-            type="password"       
-            placeholder="password..."       
-            v-model="password"     
-          />     
-          <button type="submit">
-            Login
-          </button>   
-        </form>
+        
       </Cell>
       <Cell class="large-3" id="sidebar-cell" style="position:fixed">
         <header id="global-sidebar">
@@ -73,17 +58,17 @@ onAuthStateChanged(getAuth(), user => {
                 <!-- <RouterLink></RouterLink> -->
                 <RouterLink to="/settings"><span class="large-state"><SettingsIcon></SettingsIcon></span></RouterLink>
                 <template v-if="currentUser.uid == null">
-                  <RouterLink to="/register"><span class="large-state">Register</span></RouterLink>
+                  <RouterLink to="/login"><span class="large-state">Login</span></RouterLink>
                 </template>
                 <template v-else>
-                  <a href="#">
+                  <a href="#" @click="toggleUserCentre">
                     <div class="large-state" id="user-centre">
                       <img :src="currentUser.photoURL" alt="that's you lol">
                       <b>{{currentUser.displayName}}</b>
                     </div>
                   </a>
 
-                  <div id="user-centre-pop">
+                  <div id="user-centre-pop" v-click-away="toggleUserCentre" v-if="userCentreOpen">
                     <small><i>User id:</i> {{currentUser.uid}}</small>
                     <RouterLink :to="'/'+ this.currentUser.displayName">View profile</RouterLink>
                     <a href="#" @click="logout">Logout</a>
@@ -133,10 +118,11 @@ onAuthStateChanged(getAuth(), user => {
   display: flex;
   align-items: center;
   position: relative;
+  gap: 0.5em;
 }
 #user-centre-pop {
   position: absolute;
-  top: 2em;
+  top: 2.5em;
   right: 0;
   display: flex;
   width: 250px;
@@ -374,33 +360,35 @@ img {
 //import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 
 export default {
-/*   data () {
+  data () {
     return {
-      currentUser: {
+      /* currentUser: {
         uid: null,
         displayName: null,
         profilePicture: null,
-      }
+      } */
+
+      userCentreOpen: false,
     }
-  }, */
+  },
 
   methods: {
-    login() {
-      signInWithEmailAndPassword(getAuth(), this.email, this.password)
-        .then(() => {
-          alert('Successfully logged in');
-          this.$router.push('/');
-        })
-        .catch(error => {
-          alert(error.message);
-        });
+    onClickAway(event) {
+      console.log(event)
+    },
+    toggleUserCentre(event) {
+      if (!this.userCentreOpen) {
+        this.userCentreOpen = true;
+      } else {
+        this.userCentreOpen = false;
+      }
     },
   
     logout() {
       signOut(getAuth())
         .then(() => {
           alert('Successfully logged out');
-          this.$router.push('/baiii');
+          this.$router.push('/');
         })
         .catch(error => {
           alert(error.message);
