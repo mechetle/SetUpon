@@ -50,9 +50,9 @@
 
       <section class="post_desc">
         <Container>
-          <quote>
+          <blockquote>
             "{{post_temp.description}}"
-          </quote>
+          </blockquote>
         </Container>
       </section>
 
@@ -245,7 +245,7 @@ export default {
           multiplier[i] = this.rendered_img_dims[i].width / this.natural_img_dims[i].width;
         }
       } catch (e) {
-        console.error("Something fucked up", e)
+        console.log("rendered and natural _img_dims hasn't been loaded in yet on first load", e)
       }
 
       return multiplier;
@@ -340,27 +340,21 @@ export default {
       }
     });
 
-    // initiate the dims of every image in the the main:
-    let imagesForAnnotation = document.querySelectorAll(".annot-wrapper img");
+    // This will store an array of dom elements of image that are for annotation
+    let imagesForAnnotation;
+
+    // initiate the dims of every image in the the main: (won't happen during create mode)
+    imagesForAnnotation = document.querySelectorAll(".annot-wrapper img");
     imagesForAnnotation.forEach(el => {
       el.onload = () => {
-        let dims = {
-          width: el.naturalWidth,
-          //height: el.naturalHeight,
-        }
-        
         setTimeout(() => {
-          let dims_rendered = {
-            width: el.width,
-            //height: el.height,
-          }
-          console.log(dims_rendered);
-          this.rendered_img_dims.push(dims_rendered)
+          this.push_rendered_img_dims(el)  
         }, 1000)
-
-        this.natural_img_dims.push(dims)
+        this.push_natural_img_dims(el);
       }
     });
+    
+    // This is to detect window resize and update the "rendered images' dimensions in dom"
     let movePointers;
     window.addEventListener('resize', (event) => {
       clearTimeout(movePointers);
@@ -403,6 +397,21 @@ export default {
         default:
           break;
       }
+    }, 
+    push_natural_img_dims(el) {
+      let dims = {
+        width: el.naturalWidth,
+        //height: el.naturalHeight,
+      }
+      this.natural_img_dims.push(dims)
+    },
+    push_rendered_img_dims(el) {
+      let dims_rendered = {
+        width: el.width,
+        //height: el.height,
+      }
+      console.log(dims_rendered);
+      this.rendered_img_dims.push(dims_rendered)
     }
   }
 }

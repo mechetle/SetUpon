@@ -43,6 +43,8 @@ const router = createRouter({
       component: () => import('../views/Post.vue'),
       props: true,
     },
+
+    // Authentication stuff
     {
       path: '/login',
       name: 'Authentication',
