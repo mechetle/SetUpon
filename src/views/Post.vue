@@ -34,7 +34,17 @@
 
         <div class="annot-wrapper">
           <div class="blur-overlay"></div>
-          <img :src="post_temp.images[0].url" alt="">
+
+          <template v-if="state == 'view'">
+            <img :src="post_temp.images[0].url" alt="">
+          </template>
+
+          <template v-else>
+            <div class="img-upload-zone">
+              <h3>Upload image to header</h3>
+            </div>
+          </template>
+          
         </div>
       </header>
 
@@ -63,7 +73,14 @@
 
                   <div class="annot-wrapper">
                     <div class="blur-overlay"></div>
-                    <img :src="images.url" alt="">
+
+                    <template v-if="state == 'view'">
+                      <img :src="images.url" alt="">
+                    </template>
+
+                    <template v-else>
+                      <h5>Upload image</h5>
+                    </template>
                   </div>
                 </div>
               </Cell>
@@ -500,6 +517,13 @@ export default {
   header.post {
     background: #D7CCC8;
     display: flex;
+
+    .img-upload-zone {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
     .top {
       display: flex;

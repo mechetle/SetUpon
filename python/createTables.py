@@ -71,26 +71,27 @@ def create_items_table(dynamodb=None):
         }
     )
     return table
-    
-def create_users_table(dynamodb=None): # this table will store a list of posts and bookmarks
+
+# this table will store bookmarks 
+def create_users_table(dynamodb=None):
  if not dynamodb:
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.create_table(
         TableName='su-users',
 
-        # Partition key = uid           ----  Firebase auth generates this uid        
+        # Partition key = username     ---- For getting a profile by scanning for the username      
 
         KeySchema=[
-            {
-            'AttributeName': 'uid',
-            'KeyType': 'HASH'               # Partition key
-            },
+        {
+        'AttributeName': 'username',
+        'KeyType': 'HASH' # Partition key
+        }
         ],
         AttributeDefinitions=[
-            {
-            'AttributeName': 'username',
-            'AttributeType': 'S'
-            }
+        {
+        'AttributeName': 'username',
+        'AttributeType': 'S'
+        }
         ],
         ProvisionedThroughput={
         'ReadCapacityUnits': 10,
