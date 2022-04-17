@@ -41,6 +41,8 @@ import { createVNode } from '@vue/runtime-core';
 
 <script>
 export default {
+  //props: ["currentUser"], // <-- used only for authentication for dynamodb
+
   data () {
     return {
       post: {
@@ -68,7 +70,8 @@ export default {
           * if goes to /posts --> fine
           * if goes to /posts/ --> error
         */
-        import.meta.env.VITE_API_URL + '/posts'
+        import.meta.env.VITE_API_URL + '/posts',
+        //{ headers: {"Authorization" : `Bearer ${this.currentUser.at}`} }
       )
       .then((response) => {
         this.published = response.data

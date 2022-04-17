@@ -33,9 +33,7 @@ const router = createRouter({
       path: "/create/setup",
       name: "create_post",
       component: () => import("../views/Post.vue"),
-      meta: {
-        authRequired: true,
-      },
+      //meta: {authRequired: true,},
     },
     {
       path: '/:user/:date',

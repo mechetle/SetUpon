@@ -6,6 +6,9 @@ import VueClickAway from "vue3-click-away";
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+// import { plugin, defaultConfig } from '@formkit/vue';
+// import S3UploaderPlugin from "./s3-uploader-plugin";
+
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -25,6 +28,12 @@ const authInstance = getAuth();
 
 app.use(router);
 app.use(VueClickAway);
+// app.use(plugin, {
+//   uploadUrl: 'https://6etx7kng79.execute-api.us-east-2.amazonaws.com/signature',
+//   plugins: [
+//       S3UploaderPlugin
+//   ]
+// });
 
 app.mount("#app");
 

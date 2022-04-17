@@ -18,6 +18,7 @@ const currentUser = reactive({
   uid: null,
   displayName: null,
   photoURL: null,
+  at: null,
 })
 
 onAuthStateChanged(getAuth(), user => {
@@ -27,10 +28,12 @@ onAuthStateChanged(getAuth(), user => {
     currentUser.uid = user.uid
     currentUser.displayName = user.displayName
     currentUser.photoURL = user.photoURL
+    currentUser.at = user.stsTokenManager.accessToken
   } else {
     currentUser.uid = null
     currentUser.displayName = null
     currentUser.photoURL = null
+    currentUser.at = null
   }
 });
 </script>
@@ -41,7 +44,7 @@ onAuthStateChanged(getAuth(), user => {
       <Cell class="large-3" id="sidebar-cell"></Cell>
       <Cell class="large-auto">
         <transition name="slide" mode="out-in">
-          <RouterView id="router-view"/> 
+          <RouterView id="router-view" :currentUser="currentUser"/> 
         </transition>
         
       </Cell>

@@ -4,7 +4,7 @@ const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event, context) => {
-  let body;
+  let body = "";
   let statusCode = 200;
   const headers = {
     "Content-Type": "application/json"
@@ -13,12 +13,16 @@ exports.handler = async (event, context) => {
   try {
     switch (event.routeKey) {
       // * User posts:
-      case "DELETE /posts/{user}":
+      case "GET /posts":
+        body = await dynamo.scan({ TableName: "su-user-setups" }).promise(); // this may use a load of resources
+        break;
+      case "DELETE /posts/{user}/{date}":
         await dynamo
           .delete({
             TableName: "su-user-setups",
             Key: {
-              user: event.pathParameters.user
+              user: event.pathParameters.user,
+              date: parseInt(event.pathParameters.date)
             }
           })
           .promise();
@@ -67,9 +71,6 @@ exports.handler = async (event, context) => {
             }
           })
           .promise();
-        break;
-      case "GET /posts":
-        body = await dynamo.scan({ TableName: "su-user-setups" }).promise();
         break;
       case "PUT /posts":
         let requestJSON = JSON.parse(event.body);
