@@ -32,8 +32,7 @@
 
 
         <!-- Annotations header -->
-        <!-- <template v-if="post.images[0].url != null || post.images.url != null"></template> -->
-        <template v-if="checkIfImageExists">
+        <template v-if="post.images[0].annotations.length >= 0">
           <div 
             v-for="(annotation, index) in post.images[0].annotations"
             class="pointer"
@@ -42,7 +41,8 @@
           >
           </div>
         </template>
-        <template v-else>
+        <!-- v-if="(post.images.length == 0 && post.images[0].url == '') -->
+        <template v-if="state == 'create'">
           <div class="upload-zone">
             <input type="file" @change="fileUpload($event, 0)">
           </div> 
@@ -53,7 +53,7 @@
             <div class="blur-overlay"></div>
           </div>
 
-          <template v-if="state == 'view'">
+          <template v-if="post.images[0].url != ''">
             <img :src="post.images[0].url" alt="">
           </template>
           <template v-else>
@@ -342,11 +342,11 @@ export default {
       });
     } else {
       console.log("Creating new post mode")
-      this.post.images = {
+      this.post.images = [{
         url: "",
         caption: "",
         annotations: []
-      }
+      }]
     }
 
   },
@@ -385,13 +385,10 @@ export default {
       }
     });
 
-    // Do stuff specifically for create mode;
-    if (this.state == 'create') {
-      // not editing:
-      if (!this.editing) {
-        // set the user for this new post
-        this.post.user = this.currentUser.displayName;
-      }
+    // Do stuff specifically for create mode also when not editing:;
+    if (this.state == 'create' && !(this.editing)) {
+      // set the user for this new post
+      this.post.user = this.currentUser.displayName;
     }
 
     // This will store an array of dom elements of image that are for annotation
@@ -462,6 +459,9 @@ export default {
         .then((response) => {
           console.log("S3: Image uploaded through presigned_url", response.data)
           console.log(presigned_url.split('?')[0])
+
+          // store it in the vue data:
+          this.post.images[index].url = presigned_url.split('?')[index]
         })
         .catch((error) => {
           console.log(error);
@@ -669,13 +669,47 @@ export default {
     }
   }
   .upload-zone {
+    position: absolute;
+    display: flex;
+    //width: 100%;
+    justify-content: center;
     z-index: 8;
+    border-radius: 1.1em;
+
+    input {
+      display: flex;
+      background: #fff;
+      color: #000;
+      padding: 1.5em;
+      margin-top: 2.5em;
+      border-radius: 0.85em;
+      box-shadow: 0px 7px 20px hsl(0deg 0% 0% / 25%);
+    }
   }
+
+  input[type=file] {
+    &::file-selector-button {
+      cursor: pointer;
+      font-family: "Space Grotesk", sans-serif;
+      background: $accent;
+      padding: 0.85em 1.2em;
+      border: 0;
+      border-radius: 0.85em;
+      margin-right: 1em;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    &::file-selector-button:hover {
+      background-color: #536DFE;
+    }
+  }
+  
+
 
   header.post {
     background: #D7CCC8;
     display: flex;
-
+    justify-content: center;
 
     .img-upload-zone {
       min-height: 100vh;

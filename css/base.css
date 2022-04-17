@@ -97,4 +97,8 @@ blockquote {
   padding-left: 0.7em;
 }
 
+input {
+  font-family: "Space Grotesk", sans-serif;
+}
+
 /*# sourceMappingURL=base.css.map */
