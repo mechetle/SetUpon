@@ -2,7 +2,7 @@
   <div>
     <div class="post-main">
       <header class="post">
-        <div class="overlay">
+        <div class="overlay" v-show="stampModeEnabled == 'mouse'">
           <div class="top">
             <p class="breadcrumbs">
               <RouterLink to="/">Home</RouterLink> > <RouterLink :to="'/' + route.user">
@@ -43,12 +43,28 @@
         </template>
         <!-- v-if="(post.images.length == 0 && post.images[0].url == '') -->
         <template v-if="state == 'create'">
-          <div class="upload-zone">
-            <input type="file" @change="fileUpload($event, 0)">
+          <div class="img-creation-bar">
+            <input type="file" @change="fileUpload($event, 0)" v-show="stampModeEnabled == 'image'">
+
+            <div class="toolbar">
+              <input type="radio" id="mouse" value="mouse" v-model="stampModeEnabled">
+              <label for="mouse"><Cursor></Cursor></label>
+
+              <input type="radio" id="image" value="image" v-model="stampModeEnabled">
+              <label for="image">Image</label>
+              
+              <input type="radio" id="pointer_stamp" value="stamp" v-model="stampModeEnabled">
+              <label for="pointer_stamp">Add</label>
+
+              <input type="radio" id="pointer_move" value="move" v-model="stampModeEnabled">
+              <label for="pointer_move"><CursorMove></CursorMove></label>
+            </div>
           </div> 
         </template>
 
-        <div class="annot-wrapper">
+        <div class="annot-wrapper" :class="{add: stampModeEnabled == 'stamp', move: stampModeEnabled == 'move'}">
+          <div class="annotate-zone" v-show="stampModeEnabled == 'stamp'" @click="getMousePos($event)"></div>
+
           <div class="toggle-vis-blur" v-show="showTitleCard">
             <div class="blur-overlay"></div>
           </div>
@@ -59,7 +75,7 @@
           <template v-else>
             <div class="img-upload-zone">
               <h3>Upload image to header</h3>
-              <p>Drag and drop, or click the button at the top</p>
+              <p>Click the buttons: "image" > "Choose File"</p>
             </div>
           </template>
           
@@ -129,6 +145,8 @@
 <script setup>
 import VisibilityIcon from 'vue-material-design-icons/EyeOutline.vue';
 import VisibilityIconOff from 'vue-material-design-icons/EyeOffOutline.vue';
+import Cursor from 'vue-material-design-icons/CursorDefault.vue';
+import CursorMove from 'vue-material-design-icons/CursorMove.vue';
 import CloseIcon from 'vue-material-design-icons/Close.vue';
 import Sidebar from '@/components/layout/sidebar.vue';
 import Container from '@/components/layout/grid/container.vue';
@@ -149,6 +167,7 @@ export default {
 
       state: 'view',
       editing: false,
+      stampModeEnabled: 'mouse',
 
       showTitleCard: true,
       sidebar: {
@@ -426,7 +445,36 @@ export default {
     document.body.className = 'post'
   },
 
+  watch: {
+    // whenever stampMode is enabled
+    stampModeEnabled(newBool, oldBool) {
+      let annotationSpace = document.querySelectorAll(".annot-wrapper")
+      console.log("annotationSpace", annotationSpace)
+      
+      if (newBool == "stamp" || newBool == "image") {
+        console.log("turning on stamp mode for pointers")
+        this.showTitleCard = false;
+
+      } else {
+        console.log("turning off stamp mode for pointers")
+        //this.showTitleCard = true;
+      }
+    }
+  },
+
   methods: {
+    getMousePos(e) {
+      let x = e.offsetX;
+      let y = e.offsetY;
+      console.log(x, y)
+
+      // process the coords so its in scale with the dimensions of image 👌🏻
+
+
+      // After it has been put in to the data, remove event listener and turn off stamp mode
+      // this limits user from spamming too much, making decisions calculated.
+      this.stampModeEnabled = "mouse";
+    },
     fileUpload(e, index) {
       // get the pre-signed url from the lambda function through the api gateway
       this.$http.post(`${import.meta.env.VITE_API_URL}/su-s3`, {
@@ -462,6 +510,18 @@ export default {
 
           // store it in the vue data:
           this.post.images[index].url = presigned_url.split('?')[index]
+
+          // Once stored get and push dimensions
+          this.$nextTick(() => {
+            // The whole view is rendered, so I can safely access or query
+            // the DOM. ¯\_(ツ)_/¯
+            let imagesForAnnotation = document.querySelectorAll(".annot-wrapper img");
+            console.log("BIG BRUH:", imagesForAnnotation)
+            imagesForAnnotation[index].onload = () => {
+              this.push_rendered_img_dims(imagesForAnnotation[index], index)
+              this.push_natural_img_dims(imagesForAnnotation[index], index)
+            }
+          })
         })
         .catch((error) => {
           console.log(error);
@@ -541,21 +601,37 @@ export default {
           break;
       }
     }, 
-    push_natural_img_dims(el) {
+    push_natural_img_dims(el, index = null) {
       let dims = {
         width: el.naturalWidth,
         //height: el.naturalHeight,
       }
-      this.img_dims.natural.push(dims)
+      console.log(dims);
+
+      if (index == null) {
+        // if no index is supplied just push it
+        this.img_dims.natural.push(dims)
+      } else {
+        // if there is an index replace val at index
+        this.img_dims.natural[index] = dims
+      }
+
     },
-    push_rendered_img_dims(el) {
+    push_rendered_img_dims(el, index = null) {
       let dims_rendered = {
         width: el.width,
         //height: el.height,
       }
       console.log(dims_rendered);
-      this.img_dims.rendered.push(dims_rendered)
+      if (index == null) {
+        // if no index is supplied just push it
+        this.img_dims.rendered.push(dims_rendered)
+      } else {
+        // if there is an index replace val at index
+        this.img_dims.rendered[index] = dims_rendered
+      }
     },
+
     hideTitleCard() {
       this.showTitleCard = !this.showTitleCard;
     }
@@ -564,6 +640,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .toolbar {
+    display: flex;
+    align-items: center;
+    margin-top: 0.35em;
+    gap: 1.15em;
+    position: fixed;
+
+    label {
+      cursor: pointer;
+      border-radius: 0.4em;
+    }
+
+    input:checked + label {
+      background: #536DFE;
+      padding: 0.4em;
+      color: #ECEFF1;
+    }
+
+    input {
+      // height: 0;
+      // width: 0;
+      // margin: 0;
+      display: none;
+    }
+  }
+  .img-creation-bar {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 8;
+    border-radius: 1.1em;
+    height: 100px;
+
+    > input {
+      display: flex;
+      background: #fff;
+      color: #000;
+      padding: 1.5em;
+      margin-top: 17.5em;
+      border-radius: 0.85em;
+      box-shadow: 0px 7px 20px hsl(0deg 0% 0% / 25%);
+    }
+  }
   section.post_desc {
     margin: 4em 0px;
   }
@@ -624,6 +744,15 @@ export default {
   }
   .material-design-icon {
     display: flex;
+    transition-duration: 0.25s;
+
+    * {
+      transition-duration: 0.25s;
+    }
+
+    svg {
+      transition-duration: 0.25s !important;
+    }
   }
   .breadcrumbs {
     z-index: 1;
@@ -664,26 +793,19 @@ export default {
   .annot-wrapper {
     width: 100%;
 
+    .annotate-zone {
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      position: absolute;
+      cursor: url('/outline_add_circle_outline_black_18dp.png'),crosshair;
+    }
+    &.move {
+      cursor: grab;
+    }
+
     img {
       min-width: 100%;
-    }
-  }
-  .upload-zone {
-    position: absolute;
-    display: flex;
-    //width: 100%;
-    justify-content: center;
-    z-index: 8;
-    border-radius: 1.1em;
-
-    input {
-      display: flex;
-      background: #fff;
-      color: #000;
-      padding: 1.5em;
-      margin-top: 2.5em;
-      border-radius: 0.85em;
-      box-shadow: 0px 7px 20px hsl(0deg 0% 0% / 25%);
     }
   }
 
@@ -701,23 +823,26 @@ export default {
     }
     &::file-selector-button:hover {
       background-color: #536DFE;
+      color: #ECEFF1;
     }
   }
   
 
+  .img-upload-zone {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    user-select: none;
+    color: #A1887F;
+  }
 
   header.post {
     background: #D7CCC8;
     display: flex;
     justify-content: center;
 
-    .img-upload-zone {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
 
     .top {
       display: flex;
