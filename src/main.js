@@ -2,7 +2,8 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import axios from 'axios';
-import { setupCache } from 'axios-cache-adapter'
+//import { setupCache } from 'axios-cache-adapter'
+import { setupCache } from 'axios-cache-interceptor';
 import VueClickAway from "vue3-click-away";
 
 import { initializeApp } from "firebase/app";
@@ -48,13 +49,16 @@ dyn.listTables(function (err, data)
 }); 
 */
 
-const cache = setupCache({
+const api = setupCache(axios);
+
+
+/* const cache = setupCache({
   maxAge: 15 * 60 * 1000
 })
 
 const api = axios.create({
   adapter: cache.adapter
-})
+}) */
 
 //axios.defaults.headers.common['secret-sauce'] = process.env.VUE_APP_SECRET_SAUCE
 app.config.globalProperties.$http = api;            // this.$http

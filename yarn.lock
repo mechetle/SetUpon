@@ -738,6 +738,15 @@ axios-cache-adapter@^2.7.3:
     cache-control-esm "1.0.0"
     md5 "^2.2.1"
 
+axios-cache-interceptor@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/axios-cache-interceptor/-/axios-cache-interceptor-0.10.2.tgz#e2550a5e181cd91ea5185ecc2d2a20327566ef32"
+  integrity sha512-lhsT3euGTMRlNf7DZA3QFuVvp4DQ8Ig2krTJStULdf5235KS9VKLMFMVylza82asYbg4mzErvMUujuJf2uGndQ==
+  dependencies:
+    cache-parser "^1.2.4"
+    fast-defer "^1.1.7"
+    object-code "^1.2.2"
+
 axios@^0.26.1:
   version "0.26.1"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.26.1.tgz#1ede41c51fcf51bbbd6fd43669caaa4f0495aaa9"
@@ -788,6 +797,11 @@ cache-control-esm@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/cache-control-esm/-/cache-control-esm-1.0.0.tgz#417647ecf1837a5e74155f55d5a4ae32a84e2581"
   integrity sha512-Fa3UV4+eIk4EOih8FTV6EEsVKO0W5XWtNs6FC3InTfVz+EjurjPfDXY5wZDo/lxjDxg5RjNcurLyxEJBcEUx9g==
+
+cache-parser@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/cache-parser/-/cache-parser-1.2.4.tgz#60975135ef2330e6a1d60895279d7237a2a9b398"
+  integrity sha512-O0KwuHuJnbHUrghHi2kGp0SxnWSIBXTYt7M8WVhW0kbPRUNUKoE/Of6e1rRD6AAxmfxFunKnt90yEK09D+sc5g==
 
 callsites@^3.0.0:
   version "3.1.0"
@@ -1177,6 +1191,11 @@ fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
+
+fast-defer@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/fast-defer/-/fast-defer-1.1.7.tgz#943bc3c7a876d437360318ab1e1f269a29f31ba4"
+  integrity sha512-tJ01ulDWT2WhqxMKS20nXX6wyX2iInBYpbN3GO7yjKwXMY4qvkdBRxak9IFwBLlFDESox+SwSvqMCZDfe1tqeg==
 
 fast-diff@^1.1.2:
   version "1.2.0"
@@ -1586,6 +1605,11 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
+
+object-code@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/object-code/-/object-code-1.2.2.tgz#ac0133813ae570555c51e47b9beee73494a39a6a"
+  integrity sha512-ZSbEQdei4ElzuDM4BmazKSwINacocBf3/8rte25aNqXzvT/8dSaNVY9egsjAaBL/UhW55JNxAvXOKPIsL2MwWQ==
 
 once@^1.3.0:
   version "1.4.0"

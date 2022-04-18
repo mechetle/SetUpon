@@ -195,6 +195,7 @@ onAuthStateChanged(getAuth(), user => {
   &.flat {
     box-shadow: none;
   }
+  &.nobg {background: transparent;}
 
   &:hover {
     transition-delay: 0s;

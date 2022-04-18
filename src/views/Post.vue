@@ -37,14 +37,14 @@
             v-for="(annotation, index) in post.images[0].annotations"
             class="pointer"
             :style="p_cords[0][index]"
-            @click="openSidebar('annotation', annotation)"
+            @click="openSidebar('annotation', annotation, 0, index)"
           >
           </div>
         </template>
         <!-- v-if="(post.images.length == 0 && post.images[0].url == '') -->
         <template v-if="state == 'create'">
           <div class="img-creation-bar">
-            <input type="file" @change="fileUpload($event, 0)" v-show="stampModeEnabled == 'image'">
+            <input type="file" accept="image/jpeg" @change="fileUpload($event, 0)" v-show="stampModeEnabled == 'image'">
 
             <div class="toolbar">
               <input type="radio" id="mouse" value="mouse" v-model="stampModeEnabled">
@@ -63,7 +63,7 @@
         </template>
 
         <div class="annot-wrapper" :class="{add: stampModeEnabled == 'stamp', move: stampModeEnabled == 'move'}">
-          <div class="annotate-zone" v-show="stampModeEnabled == 'stamp'" @click="getMousePos($event)"></div>
+          <div class="annotate-zone" v-show="stampModeEnabled == 'stamp'" @click="addPointer($event, 0)"></div>
 
           <div class="toggle-vis-blur" v-show="showTitleCard">
             <div class="blur-overlay"></div>
@@ -101,7 +101,7 @@
                     v-for="(annotation, j) in images.annotations"
                     class="pointer"
                     :style="p_cords[i + 1][j]"
-                    @click="openSidebar('annotation', annotation)"
+                    @click="openSidebar('annotation', annotation, i + 1, j)"
                   >
                   </div>
 
@@ -138,6 +138,11 @@
           <CloseIcon size="45"></CloseIcon>
         </div>
       </Transition>
+      <Transition name="scale_in">
+        <div class="action-button flat nobg" id="delete" v-if="sidebar.opened && state == 'create'" @click="deletePointer">
+          <Delete size="45" v-if="sidebar.opened"></Delete>
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
@@ -145,6 +150,7 @@
 <script setup>
 import VisibilityIcon from 'vue-material-design-icons/EyeOutline.vue';
 import VisibilityIconOff from 'vue-material-design-icons/EyeOffOutline.vue';
+import Delete from 'vue-material-design-icons/Delete.vue';
 import Cursor from 'vue-material-design-icons/CursorDefault.vue';
 import CursorMove from 'vue-material-design-icons/CursorMove.vue';
 import CloseIcon from 'vue-material-design-icons/Close.vue';
@@ -152,6 +158,7 @@ import Sidebar from '@/components/layout/sidebar.vue';
 import Container from '@/components/layout/grid/container.vue';
 import GridX from "@/components/layout/grid/grid-x.vue";
 import Cell from '@/components/layout/grid/cell.vue';
+
 </script>
 
 <script>
@@ -168,6 +175,11 @@ export default {
       state: 'view',
       editing: false,
       stampModeEnabled: 'mouse',
+
+      pointerClicked: {
+        i: null,
+        j: null,
+      },
 
       showTitleCard: true,
       sidebar: {
@@ -429,6 +441,12 @@ export default {
     // This is to detect window resize and update the "rendered images' dimensions in dom"
     let movePointers;
     window.addEventListener('resize', (event) => {
+      // this is so it gets every images
+      if (this.post.images.length != imagesForAnnotation.length) {
+        imagesForAnnotation = document.querySelectorAll(".annot-wrapper img");
+      }
+
+
       clearTimeout(movePointers);
       movePointers = setTimeout(() => {
         console.log("resizing changing this width:", this.img_dims.rendered[0].width);
@@ -463,16 +481,32 @@ export default {
   },
 
   methods: {
-    getMousePos(e) {
+    deletePointer(e) {
+      let i = this.pointerClicked.i
+      let j = this.pointerClicked.j
+
+      this.post.images[i].annotations.splice(j, 1)
+      this.sidebar.opened = false
+    },
+    addPointer(e, i) {
       let x = e.offsetX;
       let y = e.offsetY;
       console.log(x, y)
 
       // process the coords so its in scale with the dimensions of image 👌🏻
+      x = x / this.multiplier;
+      y = y / this.multiplier;
 
+      // After it has been put in to the data
+      let newPointer = {
+        x: x,
+        y: y,
+        item: "",
+        personal_comments: ""
+      }
+      this.post.images[i].annotations.push(newPointer)
 
-      // After it has been put in to the data, remove event listener and turn off stamp mode
-      // this limits user from spamming too much, making decisions calculated.
+      // Turn off stamp mode
       this.stampModeEnabled = "mouse";
     },
     fileUpload(e, index) {
@@ -513,14 +547,14 @@ export default {
 
           // Once stored get and push dimensions
           this.$nextTick(() => {
-            // The whole view is rendered, so I can safely access or query
-            // the DOM. ¯\_(ツ)_/¯
             let imagesForAnnotation = document.querySelectorAll(".annot-wrapper img");
             console.log("BIG BRUH:", imagesForAnnotation)
             imagesForAnnotation[index].onload = () => {
               this.push_rendered_img_dims(imagesForAnnotation[index], index)
               this.push_natural_img_dims(imagesForAnnotation[index], index)
             }
+
+            this.stampModeEnabled = 'stamp'
           })
         })
         .catch((error) => {
@@ -584,8 +618,14 @@ export default {
         behavior: 'smooth'
       });
     },
-    openSidebar: function (type, data, event) {
+    openSidebar: function (type, data, i, j, event) {
       this.sidebar.opened = true;
+
+      // store which pointer it was clicked
+      this.pointerClicked = {
+        i: i,
+        j: j
+      }
 
       switch (type) {
         case 'annotation':
@@ -640,6 +680,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .action-button#delete {
+    margin-right: 20.25em;
+  }
   .toolbar {
     display: flex;
     align-items: center;
@@ -798,7 +841,7 @@ export default {
       height: 100%;
       z-index: 1;
       position: absolute;
-      cursor: url('/outline_add_circle_outline_black_18dp.png'),crosshair;
+      cursor: url('/outline_add_circle_outline_black_18dp.png') 18 18,crosshair;
     }
     &.move {
       cursor: grab;
