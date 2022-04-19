@@ -105,18 +105,27 @@
                   >
                   </div>
 
-                  <div class="annot-wrapper">
+                  <div class="img-creation-bar">
+                    <input type="file" accept="image/jpeg" @change="fileUpload($event, i + 1)" v-show="stampModeEnabled == 'image'">
+                  </div>
+
+                  <div class="annot-wrapper" :class="{add: stampModeEnabled == 'stamp', move: stampModeEnabled == 'move'}">
+                    <div class="annotate-zone" v-show="stampModeEnabled == 'stamp'" @click="addPointer($event, i + 1)"></div>
+
                     <div class="blur-overlay"></div>
-                      <img :src="images.url" alt="">
-
-                    <!-- <template v-if="state == 'view'">
-                    </template> -->
-
+                    <img :src="images.url" alt="">
                   </div>
                 </div>
+                
               </Cell>
               <Cell class="large-3">
-                <p class="caption">
+                <p 
+                  class="caption input"
+                  placeholder="Describe what is in the photo" :contenteditable="createMode" 
+                  @input="onInput($event, 'caption', i + 1)"
+                  @keydown="preventInput($event, 230)" 
+                  @paste="processPaste"
+                >
                   {{images.caption}}
                 </p>
                 <!-- <p>
@@ -126,6 +135,12 @@
                 </p> -->
               </Cell>
             </template>
+
+            <p class="add-section" v-if="post.images.length != 5">
+              <a href="#" @click="initiateImageSpace">
+                Add new section {{post.images.length}} / 5
+              </a>
+            </p>
           </GridX>
         </Container>
       </article>
@@ -489,6 +504,16 @@ export default {
   },
 
   methods: {
+    initiateImageSpace(e) {
+      e.preventDefault();
+      if (this.post.images.length < 6) {
+        this.post.images.push({
+          url: "",
+          caption: "",
+          annotations: []
+        })
+      }
+    },
     deletePointer(e) {
       let i = this.pointerClicked.i
       let j = this.pointerClicked.j
@@ -502,8 +527,11 @@ export default {
       console.log(x, y)
 
       // process the coords so its in scale with the dimensions of image 👌🏻
-      x = x / this.multiplier;
-      y = y / this.multiplier;
+      this.$nextTick(() => {
+        x = x / this.multiplier;
+        y = y / this.multiplier;
+        console.log("multiplied:", x, y)
+      })
 
       // After it has been put in to the data
       let newPointer = {
@@ -577,9 +605,15 @@ export default {
     },
 
     // for the create page:
-    onInput(e, data) {
+    onInput(e, data, i) {
       //console.log(e.target.innerText);
-      this.post[data] = e.target.innerText
+      if (data != 'caption') {
+        this.post[data] = e.target.innerText
+      } else {
+        console.log(i);
+        this.post.images[i].caption = e.target.innerText
+      }
+
     },
     preventInput(e, max_char = 140) {
       // if user presses enter don't do anything
@@ -691,6 +725,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .add-section {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 3.5em;
+  }
   .action-button#delete {
     margin-right: 20.25em;
   }
@@ -824,6 +864,7 @@ export default {
     position: relative;
     display: flex;
     background: #D7CCC8;
+    min-height: 17em;
   }
 
   body:not(.post) {
