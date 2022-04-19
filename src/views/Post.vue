@@ -105,15 +105,23 @@
                   >
                   </div>
 
-                  <div class="img-creation-bar">
-                    <input type="file" accept="image/jpeg" @change="fileUpload($event, i + 1)" v-show="stampModeEnabled == 'image'">
+                  <div class="img-creation-bar" v-show="stampModeEnabled == 'image'">
+                    <input type="file" accept="image/jpeg" @change="fileUpload($event, i + 1)">
                   </div>
 
                   <div class="annot-wrapper" :class="{add: stampModeEnabled == 'stamp', move: stampModeEnabled == 'move'}">
                     <div class="annotate-zone" v-show="stampModeEnabled == 'stamp'" @click="addPointer($event, i + 1)"></div>
 
                     <div class="blur-overlay"></div>
-                    <img :src="images.url" alt="">
+                    <template v-if="post.images[i + 1].url != ''">
+                      <img :src="images.url" alt="">
+                    </template>
+                    <template v-else>
+                      <div class="img-upload-zone">
+                        <h4>Upload image to header</h4>
+                        <p>Click the buttons: "image" > "Choose File"</p>
+                      </div>
+                    </template>
                   </div>
                 </div>
                 
@@ -764,9 +772,14 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 8;
+    z-index: 9;
     border-radius: 1.1em;
     height: 100px;
+
+    article & {
+      width: 100%;
+      z-index: 8;
+    }
 
     > input {
       display: flex;
@@ -931,6 +944,10 @@ export default {
     flex-direction: column;
     user-select: none;
     color: #A1887F;
+
+    article & {
+      min-height: 100%;
+    }
   }
 
   header.post {
