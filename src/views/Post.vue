@@ -131,8 +131,16 @@
       </article>
 
       <Transition name="sidebar">
-        <Sidebar v-if="sidebar.opened" :title="sidebar.title" :data="sidebar.data"></Sidebar>
+        <Sidebar 
+          v-if="sidebar.opened"
+          :state = "state"
+          v-model:title="post.images[pointerClicked.i].annotations[pointerClicked.j].item" 
+          v-model:user="post.user"
+          v-model:personal_comments="post.images[pointerClicked.i].annotations[pointerClicked.j].personal_comments"
+          v-model:url="post.images[pointerClicked.i].annotations[pointerClicked.j].url"
+        ></Sidebar>
       </Transition>
+
       <Transition name="scale_in">
         <div class="action-button flat" v-if="sidebar.opened" @click="sidebar.opened = false">
           <CloseIcon size="45"></CloseIcon>
@@ -501,8 +509,9 @@ export default {
       let newPointer = {
         x: x,
         y: y,
-        item: "",
-        personal_comments: ""
+        item: null,
+        url: null,
+        personal_comments: null
       }
       this.post.images[i].annotations.push(newPointer)
 
@@ -584,17 +593,17 @@ export default {
     processPaste(e) {
       e.preventDefault();
 
-    // Get the copied text from the clipboard
-    const text = e.clipboardData
+      // Get the copied text from the clipboard
+      const text = e.clipboardData
         ? (e.originalEvent || e).clipboardData.getData('text/plain')
         : // For IE
         window.clipboardData
         ? window.clipboardData.getData('Text')
         : '';
 
-    if (document.queryCommandSupported('insertText')) {
+      if (document.queryCommandSupported('insertText')) {
         document.execCommand('insertText', false, text);
-    } else {
+      } else {
         // Insert text at the current position of caret
         const range = document.getSelection().getRangeAt(0);
         range.deleteContents();
@@ -607,7 +616,7 @@ export default {
         const selection = window.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
-    }
+      }
     },
 
     // scroll to the top:
@@ -627,13 +636,15 @@ export default {
         j: j
       }
 
+      // not needed
       switch (type) {
         case 'annotation':
-          console.log(data.item, data.personal_comments)
-          this.sidebar.title = data.item;
+          //console.log(data.item, data.personal_comments)
+
+          //this.sidebar.title = data.item;
           this.sidebar.data = {
             user: this.post.user,
-            personal_comments: data.personal_comments,
+            //personal_comments: data.personal_comments,
           }
           break;
       
@@ -927,30 +938,4 @@ export default {
     50%  {transform: scaleY(0) scaleX(5) translateY(12.15%);}
     100% {transform: scaleY(1.26) scaleX(5) translateY(12.15%);}
   } */
-  .input[placeholder] {
-    &:empty:before {
-      content: attr(placeholder);
-      color: #555;
-      cursor: text;
-    }
-    &:focus {
-      outline: none;
-      &:empty:after { //this aint going to work, i would have to create a new caret in every input, and make it jump depending on e.target.selectionStart
-        content: "";
-        margin-right: 1em;
-        display: inline-block;
-        width: 0.1px;
-        //background: rgba(0, 0, 0, 0.089);
-        backdrop-filter: invert(100%);
-        height: 1em;
-        transform: scaleY(1.26) scaleX(5) translateY(12.15%);
-        animation-name: psuedoCarret;
-        animation-duration: 1s;
-        //animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
-      }
-      &:empty:before {
-        content: "";
-      }
-    }
-  }
 </style>

@@ -1,0 +1,26 @@
+.input[placeholder] {
+  &:empty:before {
+    content: attr(placeholder);
+    color: #555;
+    cursor: text;
+  }
+  &:focus {
+    outline: none;
+    &:empty:after { //this aint going to work, i would have to create a new caret in every input, and make it jump depending on e.target.selectionStart
+      content: "";
+      margin-right: 1em;
+      display: inline-block;
+      width: 0.1px;
+      //background: rgba(0, 0, 0, 0.089);
+      backdrop-filter: invert(100%);
+      height: 1em;
+      transform: scaleY(1.26) scaleX(5) translateY(12.15%);
+      animation-name: psuedoCarret;
+      animation-duration: 1s;
+      //animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+    &:empty:before {
+      content: "";
+    }
+  }
+}
