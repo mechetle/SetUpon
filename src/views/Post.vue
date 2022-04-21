@@ -536,9 +536,9 @@ export default {
 
       // process the coords so its in scale with the dimensions of image 👌🏻
       this.$nextTick(() => {
-        x = x / this.multiplier;
-        y = y / this.multiplier;
-        console.log("Adjusted p coordinates:", x, y)
+        x = x / this.multiplier[i];
+        y = y / this.multiplier[i];
+        console.log("Adjusted p coordinates:", x, y, "with multiplier:", this.multiplier)
 
         // After it has been put in to the data
         let newPointer = {
@@ -588,12 +588,12 @@ export default {
           console.log(presigned_url.split('?')[0])
 
           // store it in the vue data:
-          this.post.images[index].url = presigned_url.split('?')[0]
+          this.post.images[index].url = presigned_url.split('?')[0].replace(import.meta.env.VITE_S3_URL, import.meta.env.VITE_CLOUDFRONT_URL)
 
           // Once stored get and push dimensions
           this.$nextTick(() => {
             let imagesForAnnotation = document.querySelectorAll(".annot-wrapper img");
-            console.log("BIG BRUH:", imagesForAnnotation)
+            //console.log("BIG BRUH:", imagesForAnnotation)
             //console.log("BIG BRUH url:", presigned_url)
 
             imagesForAnnotation[index].onload = () => {
