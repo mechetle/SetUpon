@@ -28,7 +28,7 @@ import { createVNode } from '@vue/runtime-core';
     <!-- <WorkThumb v-for='index in 5' :key='index' :title="post.title" :slug="post._id + '/' + index" :img-src="post.img + '?' + index" :desc="post.alt" :cat="post.category" :size="post.columns"/> -->
 
     <template v-if="published != null">
-      <WorkThumb v-for="setups in published.Items" :key="setups.title" :title="setups.title" :slug="setups.user + '/' + setups.date" :img-src="post.img + '?' + post.id" :desc="post.alt" :cat="post.category" :size="post.columns" :user="setups.user"/>
+      <WorkThumb v-for="setups in (published.Items).slice().reverse()" :key="setups.title" :title="setups.title" :slug="setups.user + '/' + setups.date" :img-src="setups.images[0].url" :desc="setups.description" :size="post.columns" :user="setups.user"/>
     </template>
 
     <section>

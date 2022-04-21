@@ -341,7 +341,7 @@ export default {
       } else {
         // if it's in create mode and the date is unknown set the post date to something 
         var d = new Date(); // Current date
-        this.post.date = Date.parse(d); // convert to epoch
+        this.post.date = Date.parse(d) / 1000; // convert to epoch
       }
       
       return d.toLocaleDateString("en-US", options);

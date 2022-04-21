@@ -18,7 +18,7 @@ Seen on the home and part of the trending page.
                                         {{ categories }}
                                     </span>
                             
-                                    <!-- <span>{{ cat }}</span> -->
+                                    <span>{{ cat }}</span>
                                 </div>
                             </div>
                         </div>
@@ -59,9 +59,9 @@ export default {
         /* alt: {
             type: String,
         }, */
-        cat: {
+        /* cat: {
             type: Array,
-        },
+        }, */
         slug: {
             type: String,
             required: true
