@@ -89,7 +89,7 @@ onAuthStateChanged(getAuth(), user => {
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/trending">
+              <RouterLink to="/trending" disabled>
                 <LightningBoltOutline :size="29"></LightningBoltOutline>
                 <span class="large-state">Trending</span>
               </RouterLink>
@@ -111,6 +111,10 @@ onAuthStateChanged(getAuth(), user => {
 
 <style lang="scss">
 @import '@/assets/sass/main.scss';
+a[disabled] {
+    pointer-events: none;
+    opacity: 0.2;
+}
 
 .material-design-icon {
   display: flex;

@@ -144,7 +144,11 @@
               </Cell>
             </template>
 
-            <p class="add-section" v-if="post.images.length != 5">
+            <div class="action-button flat" v-show="sidebar.opened == false && state =='create'" @click="postPost">
+              <Send size="45"></Send>
+            </div>
+
+            <p class="add-section" v-if="post.images.length != 5 && state == 'create'">
               <a href="#" @click="initiateImageSpace">
                 Add new section {{post.images.length}} / 5
               </a>
@@ -181,6 +185,7 @@
 <script setup>
 import VisibilityIcon from 'vue-material-design-icons/EyeOutline.vue';
 import VisibilityIconOff from 'vue-material-design-icons/EyeOffOutline.vue';
+import Send from 'vue-material-design-icons/Send.vue';
 import Delete from 'vue-material-design-icons/Delete.vue';
 import Cursor from 'vue-material-design-icons/CursorDefault.vue';
 import CursorMove from 'vue-material-design-icons/CursorMove.vue';
@@ -202,6 +207,8 @@ export default {
         user: null,
         date: null,
       },
+
+      uploading: false,
 
       state: 'view',
       editing: false,
@@ -227,8 +234,8 @@ export default {
         natural: [],
       },
 
-      // this is temporary information -- remove later
-      post_temp: {
+      // this is temporary data for testing -- remove later
+      /* post_temp: {
         user: "Anonymous",   // Partition
         //date: 1234567890,   // Sort
         title: "Untitled",
@@ -294,7 +301,7 @@ export default {
             ]
           },
         ]
-      },
+      }, */
 
       post: {
         user: null,   // Partition
@@ -512,6 +519,29 @@ export default {
   },
 
   methods: {
+    postPost() {
+      this.$http.put(
+        `${import.meta.env.VITE_API_URL}/posts`,
+        this.post,
+        {
+          headers: {
+            "Content-Type" : "application/json",
+            "Authorization" : `Bearer ${this.currentUser.at}`
+          },
+        }
+      ).then((response) => {
+        console.log(response.data)
+        console.log("Post posted!")
+
+        this.$router.push({ name: 'home' })
+      })
+      .catch((error) => {
+        console.log('Unable to get published posts from setUpon api: error...😭 ' + error);
+        console.log(`${import.meta.env.VITE_API_URL}/posts`, this.currentUser.at);
+        console.error(error)
+      });
+    },
+
     initiateImageSpace(e) {
       e.preventDefault();
       if (this.post.images.length < 6) {

@@ -95,7 +95,7 @@ exports.handler = async (event, context) => {
 
       /* * Items: 
       */
-      case "DELETE /items/{item}":
+      case "DELETE /items/{item}": // no user should be able to do this.
         await dynamo
           .delete({
             TableName: "su-items",
@@ -106,6 +106,7 @@ exports.handler = async (event, context) => {
           .promise();
         body = `Deleted item ${event.pathParameters.item}`;
         break;
+        
       // Get item's items
       case "GET /items/{item}":
         body = await dynamo
