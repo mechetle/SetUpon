@@ -538,18 +538,18 @@ export default {
       this.$nextTick(() => {
         x = x / this.multiplier;
         y = y / this.multiplier;
-        console.log("multiplied:", x, y)
-      })
+        console.log("Adjusted p coordinates:", x, y)
 
-      // After it has been put in to the data
-      let newPointer = {
-        x: x,
-        y: y,
-        item: null,
-        url: null,
-        personal_comments: null
-      }
-      this.post.images[i].annotations.push(newPointer)
+        // After it has been put in to the data
+        let newPointer = {
+          x: x,
+          y: y,
+          item: null,
+          url: null,
+          personal_comments: null
+        }
+        this.post.images[i].annotations.push(newPointer)
+      })
 
       // Turn off stamp mode
       this.stampModeEnabled = "mouse";
@@ -588,12 +588,14 @@ export default {
           console.log(presigned_url.split('?')[0])
 
           // store it in the vue data:
-          this.post.images[index].url = presigned_url.split('?')[index]
+          this.post.images[index].url = presigned_url.split('?')[0]
 
           // Once stored get and push dimensions
           this.$nextTick(() => {
             let imagesForAnnotation = document.querySelectorAll(".annot-wrapper img");
             console.log("BIG BRUH:", imagesForAnnotation)
+            //console.log("BIG BRUH url:", presigned_url)
+
             imagesForAnnotation[index].onload = () => {
               this.push_rendered_img_dims(imagesForAnnotation[index], index)
               this.push_natural_img_dims(imagesForAnnotation[index], index)
