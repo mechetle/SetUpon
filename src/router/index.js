@@ -41,6 +41,12 @@ const router = createRouter({
       component: () => import('../views/Post.vue'),
       props: true,
     },
+    {
+      path: '/items/:item',
+      name: 'item',
+      component: () => import('../views/Item.vue'),
+      props: true,
+    },
 
     // Authentication stuff
     {
