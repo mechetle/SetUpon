@@ -178,7 +178,7 @@
       </Transition>
       <Transition name="scale_in">
         <div class="action-button flat nobg" id="delete" v-if="sidebar.opened && state == 'create'" @click="deletePointer">
-          <Delete size="45" v-if="sidebar.opened"></Delete>
+          <DeleteIcon size="45" v-if="sidebar.opened"></DeleteIcon>
         </div>
       </Transition>
 
@@ -192,19 +192,19 @@
 </template>
 
 <script setup>
-import DeleteIcon from './components/vue-material-design-icons/Delete.vue';
-import VisibilityIcon from './components/vue-material-design-icons/EyeOutline.vue';
-import VisibilityIconOff from './components/vue-material-design-icons/EyeOffOutline.vue';
-import Send from './components/vue-material-design-icons/Send.vue';
-import Delete from './components/vue-material-design-icons/Delete.vue';
-import Cursor from './components/vue-material-design-icons/CursorDefault.vue';
-import CursorMove from './components/vue-material-design-icons/CursorMove.vue';
-import CloseIcon from './components/vue-material-design-icons/Close.vue';
+import DeleteIcon from '@/components/vue-material-design-icons/Delete.vue';
+import VisibilityIcon from '@/components/vue-material-design-icons/EyeOutline.vue';
+import VisibilityIconOff from '@/components/vue-material-design-icons/EyeOffOutline.vue';
+import Send from '@/components/vue-material-design-icons/Send.vue';
+//import Delete from '@/components/vue-material-design-icons/Delete.vue';
+import Cursor from '@/components/vue-material-design-icons/CursorDefault.vue';
+import CursorMove from '@/components/vue-material-design-icons/CursorMove.vue';
+import CloseIcon from '@/components/vue-material-design-icons/Close.vue';
 import Sidebar from '@/components/layout/sidebar.vue';
 import Container from '@/components/layout/grid/container.vue';
 import GridX from "@/components/layout/grid/grid-x.vue";
 import Cell from '@/components/layout/grid/cell.vue';
-import Alert from '../components/modals/alert.vue';
+import Alert from '@/components/modals/alert.vue';
 
 </script>
 
