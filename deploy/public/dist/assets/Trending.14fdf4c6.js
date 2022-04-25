@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as n,a as o}from"./index.a68fb71d.js";const a={data(){return{}},beforeCreate:function(){document.body.className=""}},s={class:"about"},r=o("h1",null,"Trending",-1),_=[r];function c(d,i,u,l,p,f){return t(),n("div",s,_)}var h=e(a,[["render",c]]);export{h as default};

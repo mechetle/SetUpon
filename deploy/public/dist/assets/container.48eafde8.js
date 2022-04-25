@@ -1,0 +1,1 @@
+import{_ as o,o as r,c as n,r as t}from"./index.a68fb71d.js";const s={name:"container"},a={class:"grid-container"};function c(e,i,_,d,p,l){return r(),n("div",a,[t(e.$slots,"default")])}var m=o(s,[["render",c]]);export{m as C};
