@@ -1,7 +1,7 @@
 <script setup>
 // /import TheWelcome from "@/components/TheWelcome.vue";
 import WorkThumb from "@/components/thumbnails/work-thumb.vue";
-import PlusIcon from "vue-material-design-icons/Plus.vue"
+import PlusIcon from "./components/vue-material-design-icons/Plus.vue"
 import { createVNode } from '@vue/runtime-core';
 </script>
 
