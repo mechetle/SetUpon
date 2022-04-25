@@ -19,6 +19,8 @@ const currentUser = reactive({
   displayName: null,
   photoURL: null,
   at: null,
+  lastLoggedIn: null,
+  created: null
 })
 
 onAuthStateChanged(getAuth(), user => {
@@ -29,11 +31,15 @@ onAuthStateChanged(getAuth(), user => {
     currentUser.displayName = user.displayName
     currentUser.photoURL = user.photoURL
     currentUser.at = user.stsTokenManager.accessToken
+    currentUser.lastLoggedIn = user.metadata.lastSignInTime
+    currentUser.created = user.metadata.creationTime
   } else {
     currentUser.uid = null
     currentUser.displayName = null
     currentUser.photoURL = null
     currentUser.at = null
+    currentUser.lastLoggedIn = null
+    currentUser.created = null
   }
 });
 </script>
@@ -359,6 +365,32 @@ img {
     width: 1.15em;
     border-radius: 100%;
     margin-right: 0.3em;
+  }
+}
+
+.button {
+  transition-delay: 0.25s;
+  background: $accent;
+  padding: 0.5em 1.5em;
+  border-radius: 0.85em;
+  transition-timing-function: cubic-bezier(0.95, 0.16, 0.15, 0.95);
+  color: black;
+  text-decoration: none;
+
+  &:hover {
+    transition-delay: 0s;
+    > span {
+      transform: scale(0.6);
+    }
+    cursor: pointer;
+  }
+  &:active {
+    transition-duration: 0.15s;
+    transform: scale(0.8);
+    > span {
+      transition-duration: 0.15s;
+      transform: scale(1.2);
+    }
   }
 }
 

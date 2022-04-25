@@ -74,18 +74,18 @@
       <Container>
         <h3>"{{item.item}}" on reddit</h3>
         <p>What are people saying about this item on Reddit</p>
+        <p v-if="state == 'create'"><small>This will update when posted</small></p>
 
         <GridX class="grid-margin-x">
           <template v-for="post in reddit">
             <Cell class="large-6">
               <a :href="'https://www.reddit.com' + post.data.permalink" target="_blank" >
                 <h4>{{post.data.title}}</h4>
-                <p>{{post.data.author}}</p>
-                <p>{{post.data.subreddit_name_prefixed}}</p>
+                <p>{{post.data.author}} 🔷 {{post.data.subreddit_name_prefixed}}</p>
                 <template v-if="post.data.is_reddit_media_domain == true">
                   <img :src="post.data.url">
                 </template>
-                <p>{{post.data.score}}</p>
+                <div class="upvotes">{{post.data.score}}</div>
               </a>
             </Cell>
             
@@ -291,6 +291,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#reddit {
+  a {
+    text-decoration: none;
+    display: block;
+    position: relative;
+  }
+
+  .upvotes {
+    color: #000;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 20px;
+    border-radius: 1.1em;
+    transform: translate(10px, 10px);
+    background: #8c9dff;
+  }
+}
+
 header {
   margin-top: 1.2em;
   #title {

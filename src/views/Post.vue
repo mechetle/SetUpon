@@ -15,6 +15,9 @@
               </RouterLink> > {{post.title}}
             </p>
             <div id="hide-title-card" class="hover-fx">
+              <a href="#" v-if="this.currentUser.displayName == this.post.user && this.state != 'create'">
+                <DeleteIcon :size="30" @click="preDeletePost()"></DeleteIcon>
+              </a>
               <a href="#" class="tiny" @click="hideTitleCard()">
                 <template v-if="showTitleCard"><VisibilityIcon :size="30"/> Hide</template>
                 <template v-else><VisibilityIconOff :size="30"/> Show</template>
@@ -178,11 +181,18 @@
           <Delete size="45" v-if="sidebar.opened"></Delete>
         </div>
       </Transition>
+
+      <Alert :title="alert.title" :msg="alert.msg">
+        <a v-on:click="deletePost" href="#" class="button">Delete</a>
+        <!-- <a v-if="method === 'SET' " v-on:click="archiveProject" class="button ghost">Archive</a> -->
+      </Alert>
+
     </div>
   </div>
 </template>
 
 <script setup>
+import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import VisibilityIcon from 'vue-material-design-icons/EyeOutline.vue';
 import VisibilityIconOff from 'vue-material-design-icons/EyeOffOutline.vue';
 import Send from 'vue-material-design-icons/Send.vue';
@@ -194,6 +204,7 @@ import Sidebar from '@/components/layout/sidebar.vue';
 import Container from '@/components/layout/grid/container.vue';
 import GridX from "@/components/layout/grid/grid-x.vue";
 import Cell from '@/components/layout/grid/cell.vue';
+import Alert from '../components/modals/alert.vue';
 
 </script>
 
@@ -206,6 +217,11 @@ export default {
       route: {
         user: null,
         date: null,
+      },
+
+      alert: { // alert dialogue initial values
+        title: "Uh oh, you've made some unsaved modifications",
+        msg: "Do you want to save these changes, or exit out of the builder?"
       },
 
       uploading: false,
@@ -519,6 +535,32 @@ export default {
   },
 
   methods: {
+    preDeletePost() {
+      this.alert.title = "Delete work?"
+      this.alert.msg = "You are about to delete a project, are you sure you want to do that, or was this a mis-click?"
+      document.querySelector(".alert-bg").classList.add("activated")
+    },
+    deletePost() {
+      if (this.currentUser.displayName == this.post.user) {
+        console.log("Current user is the same as post, deleting post.")
+
+        this.$http
+        .delete(`${import.meta.env.VITE_API_URL}/posts/${this.route.user}/${this.route.date}`, {
+          headers: {
+            "Content-Type" : "application/json",
+            "Authorization" : `Bearer ${this.currentUser.at}`
+          },
+        })
+        .then((response) => {
+          console.log("Deleting post response:", response)
+          this.$router.push({ path: '/' })
+        })
+        .catch((error) => {
+          console.log('Api list:' + `${import.meta.env.VITE_API_URL}/posts/${this.route.user}/${this.route.date}`);
+          console.log('Unable to delete post to api (): error ' + error);
+        });
+      }
+    },
     postPost() {
       this.$http.put(
         `${import.meta.env.VITE_API_URL}/posts`,
@@ -920,6 +962,10 @@ export default {
   }
 
   #hide-title-card {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5em;
+
     a {
       display: flex;
       font-weight: bold;

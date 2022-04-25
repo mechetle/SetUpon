@@ -25,7 +25,8 @@
               ✅ Edit details of the product.
             </small> 
           </template>
-          <template v-else>
+
+          <template v-if="url != null">
             <RouterLink to="/">More information</RouterLink>
           </template>
         </p>
@@ -75,7 +76,7 @@ export default {
     },
     url: {
       type: String,
-      default: "/"
+      default: null
     },
   },
 

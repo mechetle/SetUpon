@@ -17,7 +17,6 @@ import { createVNode } from '@vue/runtime-core';
         <div class="action-button">Item</div> 
       </RouterLink>
     </div>
-
     <div class="action-button" @click="openCreate" :class="{ opened: openedCreateMenu }">
       <PlusIcon size="45"></PlusIcon>
     </div>
