@@ -5,11 +5,10 @@ import GridX from "./components/layout/grid/grid-x.vue";
 import Cell from "./components/layout/grid/cell.vue";
 
 //icons (google material icons because i can't be bothered designing them):
-import SettingsIcon from "../node_modules/vue-material-design-icons/cogOutline.vue"
-import HomeIcon from "../node_modules/vue-material-design-icons/homeOutline.vue"
+//import SettingsIcon from "vue-material-design-icons/cogOutline.vue"
 import HomeOutline from "../node_modules/vue-material-design-icons/homeOutline.vue"
-import LightningBoltOutline from "../node_modules/vue-material-design-icons/LightningBoltOutline.vue"
-import BookOpenPageVariantOutline from "../node_modules/vue-material-design-icons/BookOpenPageVariantOutline.vue"
+import LightningBoltOutline from "vue-material-design-icons/LightningBoltOutline.vue"
+import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVariantOutline.vue"
 import { reactive, computed } from 'vue'
 
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
@@ -65,7 +64,7 @@ onAuthStateChanged(getAuth(), user => {
             <div class="tb-buttons">
               <nav class="mini-nav hover-fx dark">
                 <!-- <RouterLink></RouterLink> -->
-                <RouterLink to="/settings"><span class="large-state"><SettingsIcon></SettingsIcon></span></RouterLink>
+                <RouterLink to="/settings"><span class="large-state">S</span></RouterLink>
                 <template v-if="currentUser.uid == null">
                   <RouterLink to="/login"><span class="large-state">Login</span></RouterLink>
                 </template>
