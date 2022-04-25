@@ -5,11 +5,11 @@ import GridX from "./components/layout/grid/grid-x.vue";
 import Cell from "./components/layout/grid/cell.vue";
 
 //icons (google material icons because i can't be bothered designing them):
-import SettingsIcon from "vue-material-design-icons/cogOutline.vue"
-import HomeIcon from "vue-material-design-icons/homeOutline.vue"
+import SettingsIcon from "../node_modules/vue-material-design-icons/cogOutline.vue"
+import HomeIcon from "../node_modules/vue-material-design-icons/homeOutline.vue"
 import HomeOutline from "../node_modules/vue-material-design-icons/homeOutline.vue"
-import LightningBoltOutline from "vue-material-design-icons/LightningBoltOutline.vue"
-import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVariantOutline.vue"
+import LightningBoltOutline from "../node_modules/vue-material-design-icons/LightningBoltOutline.vue"
+import BookOpenPageVariantOutline from "../node_modules/vue-material-design-icons/BookOpenPageVariantOutline.vue"
 import { reactive, computed } from 'vue'
 
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
