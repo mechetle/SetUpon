@@ -5,8 +5,8 @@ import GridX from "./components/layout/grid/grid-x.vue";
 import Cell from "./components/layout/grid/cell.vue";
 
 //icons (google material icons because i can't be bothered designing them):
-import SettingsIcon from "./components/vue-material-design-icons/cogOutline.vue"
-import HomeOutline from "@/components/vue-material-design-icons/homeOutline.vue"
+import SettingsIcon from "./components/vue-material-design-icons/CogOutline.vue"
+import HomeOutline from "@/components/vue-material-design-icons/HomeOutline.vue"
 import LightningBoltOutline from "@/components/vue-material-design-icons/LightningBoltOutline.vue"
 import BookOpenPageVariantOutline from "@/components/vue-material-design-icons/BookOpenPageVariantOutline.vue"
 import { reactive, computed } from 'vue'
