@@ -24,4 +24,12 @@ export default defineConfig({
       }
     }
   },
+
+  // fixes loadbalancer and nginx reverse proxy
+  server: {
+    hmr: {
+      clientPort: 80,
+    }
+  }
+  
 });
