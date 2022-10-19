@@ -3,7 +3,7 @@ An interactive annotating image sharing / social media platform based around sha
 
 > ⚠️ Note: As of right now, because the AWS services were funded by credit supplied by the school, the app is pretty much non-functional at the moment. It will be set back up in the future [through some other way](https://github.com/localstack/localstack) to simulate the architecture of the backend.
 
-Here was a preview of a really early version of it:
+Here was a preview of a early version of it:
 
 
 https://user-images.githubusercontent.com/23493254/196675273-fe7bd58f-61dd-4086-a6c3-058ea4850d97.mp4
