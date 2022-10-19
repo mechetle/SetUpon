@@ -1,5 +1,7 @@
 # SetUpon
-An interactive annotating image sharing / social media platform based around sharing home office and gaming setups.
+An interactive annotating image sharing / social media platform based around sharing home office and gaming setups. This was a school project for Cloud Computing where we had to create something that utilizes AWS cloud services.
+
+> ⚠️ Note: As of right now, because the AWS services were funded by credit supplied by the school, the app is pretty much non-functional at the moment. It will be set back up in the future through Superbase to simulate the architecture of the backend.
 
 ## Recommended IDE Setup
 
